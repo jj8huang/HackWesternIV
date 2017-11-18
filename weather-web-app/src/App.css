@@ -26,3 +26,11 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.searchBox{
+  display: inline;
+}
+
+.button{
+  color: #33d6ff !important;
+}
