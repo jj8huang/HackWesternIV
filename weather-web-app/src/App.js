@@ -23,6 +23,8 @@ class App extends Component {
     <TextFieldExampleSimple >
     </TextFieldExampleSimple>
     </MuiThemeProvider>
+    <BackgroundImage>
+    </BackgroundImage>
        </div>
     );
   }
@@ -32,8 +34,17 @@ class Test extends Component {
   render(){
     return(
     <div>
-      <h1>TEEEEEEEEEEEEEEEEEEEEEEEEEEESSSSSSSSSSSSSTTTTTTTTTTTTTTTTTTTTTTT</h1>
+      <h1>TEEEEEEEEEEEEEEEEEEEEEEEEEEESSSSSSSSSSSSSTTTTTTTTTTTTTTTTTTTTTTT</h1>   
     </div>
+    );
+  }
+}
+
+class BackgroundImage extends Component {
+  render(){
+    return(
+      <div className='Header-image'>
+      </div>
     );
   }
 }
@@ -47,6 +58,5 @@ const TextFieldExampleSimple = () => (
     <br />    
   </div>
 );
-
 
 export default App;
