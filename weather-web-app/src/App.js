@@ -2,53 +2,62 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import TextField from 'material-ui/TextField';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import Divider from 'material-ui/Divider';
+import Paper from 'material-ui/Paper';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class App extends Component {
   render() {
     return (
        <div className="App">
-    {/*     <header className="App-header">
-    //       <img src={logo} className="App-logo" alt="logo" />
-    //       <h1 className="App-title">Welcome to WEATHER LAND</h1>
-    //     </header>
-    //     <p className="App-intro">
-    //       To get started, edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <Test />
-    //     <Test />
-    //     <Test />
-    //     <Test />*/}
-    <MuiThemeProvider>
-    <TextFieldExampleSimple >
-    </TextFieldExampleSimple>
-    </MuiThemeProvider>
-    <BackgroundImage>
-    </BackgroundImage>
+          <CurrentWeatherHeader>
+          </CurrentWeatherHeader>
+          <MuiThemeProvider>
+          <TextFieldExampleSimple >
+          </TextFieldExampleSimple>
+          <Weather>
+          </Weather>
+          <Weather>
+          </Weather>
+          <Weather>
+          </Weather>
+          <Weather>
+          </Weather>
+          <Weather>
+          </Weather>
+          </MuiThemeProvider> 
        </div>
     );
   }
 }
 
-class Test extends Component {
+class CurrentWeatherHeader extends Component {
   render(){
     return(
-    <div>
-      <h1>TEEEEEEEEEEEEEEEEEEEEEEEEEEESSSSSSSSSSSSSTTTTTTTTTTTTTTTTTTTTTTT</h1>   
-    </div>
-    );
-  }
-}
-
-class BackgroundImage extends Component {
-  render(){
-    return(
-      <div className='Header-image'>
+      <div className='header'>
+        <img className= 'header-image' src={ require('./images/bkg_day_clear.png') } />
       </div>
     );
   }
 }
 
+class Weather extends Component {
+  render() {
+    return(
+    <Paper style={WeatherStyle} zDepth={1}>
+      <div className='weather'>
+        <h3>CURRENT WEATHER</h3>
+        <Divider/>
+        <img src={ require('./images/sun.png') } />
+        <Divider/>
+        <p>Temperature: </p>
+        <p>Precipitation: </p>
+        <p>Windspeed: </p>
+      </div>
+      </Paper>
+    );
+  }
+}
 
 const TextFieldExampleSimple = () => (
   <div>
@@ -58,5 +67,13 @@ const TextFieldExampleSimple = () => (
     <br />    
   </div>
 );
+
+const WeatherStyle = {
+  height: 400,
+  width: 200,
+  margin: 20,
+  textAlign: 'center',
+  display: 'inline-block',
+};
 
 export default App;
