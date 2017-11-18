@@ -125,7 +125,7 @@ class LocationBox extends Component {
     super(props);
 
     this.state = {
-      value: 'Property Value',
+      value: '',
     };
   }
 
