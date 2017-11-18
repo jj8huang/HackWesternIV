@@ -45,12 +45,15 @@
   color: #33d6ff !important;
 }
 
-.WeatherStyle{
+.weatherStyle{
   height: 400;
   width: 200;
   margin: 20;
   text-align: 'center';
   display: inline-flex;
+}
+.weather{
+  border-color: #33d6ff !important ;
 }
 
 .weatherField{
