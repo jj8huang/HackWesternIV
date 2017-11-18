@@ -144,9 +144,7 @@ class LocationBox extends Component {
         id="text-field-controlled"
         value={this.state.value}
         onChange={this.handleChange}
-       /><br />
-      <br />    
-
+       />
     </div>
     );
   }
