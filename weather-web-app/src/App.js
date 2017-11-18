@@ -56,6 +56,14 @@ class App extends Component {
             <Weather className="five">
             </Weather>
             </MuiThemeProvider> 
+            <MuiThemeProvider>
+            <Weather className="six">
+            </Weather>
+            </MuiThemeProvider> 
+            <MuiThemeProvider>
+            <Weather className="seven">
+            </Weather>
+            </MuiThemeProvider> 
           </div>
        </div>
     );
@@ -102,15 +110,16 @@ class Weather extends Component {
         <Divider/>
         <img src={ require('./images/sun.png') } />
         <Divider/>
-        <p>Temperature: {this.state.temp}</p>
-        <p>Precipitation: </p>
-        <p>Windspeed: </p>
+        <p className = "weatherField">Temperature: {this.state.temp}</p>
+        <p className = "weatherField">Precipitation: </p>
+        <p className = "weatherField">Windspeed: </p>
         <EnterButton onClick={this.onButtonClick}>click me </EnterButton>
       </div>
       </Paper>
     );
   }
 }
+
 class LocationBox extends Component {
   constructor(props) {
     super(props);
@@ -137,6 +146,7 @@ class LocationBox extends Component {
         onChange={this.handleChange}
        /><br />
       <br />    
+
     </div>
     );
   }
@@ -145,6 +155,8 @@ class LocationBox extends Component {
 const EnterButton = () => (
   <div>
     <FlatButton className="button" label="Enter" />
+    <br />
+    <br />
   </div>
 );
 
