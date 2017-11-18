@@ -28,7 +28,7 @@ class App extends Component {
           </div>
           <div className = "WeatherComponents">
             <MuiThemeProvider>
-            <Weather className="one" currWeather = "sunny">
+            <Weather className="one">
             </Weather>
             </MuiThemeProvider> 
             <MuiThemeProvider>
@@ -66,7 +66,7 @@ class CurrentWeatherHeader extends Component {
 class Weather extends Component {
   render() {
     return(
-    <Paper style={WeatherStyle} zDepth={1}>
+    <Paper className = "WeatherStyle" zDepth={1}>
       <div className='weather'>
         <h3>{this.props.currWeather}</h3>
         <Divider/>
@@ -80,21 +80,16 @@ class Weather extends Component {
     );
   }
 }
-
-const LocationBox = () => (
-  <div>
-    <TextField hintText="Location" /><br />
-    <br />    
-  </div>
-);
-
-const WeatherStyle = {
-  height: 400,
-  width: 200,
-  margin: 20,
-  textAlign: 'center',
-  display: 'inline-block',
-};
+class LocationBox extends Component {
+  render() {
+    return(
+    <div>
+      <TextField hintText="Location" /><br />
+      <br />    
+    </div>
+    );
+  }
+}
 
 const EnterButton = () => (
   <div>
