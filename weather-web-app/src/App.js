@@ -4,6 +4,7 @@ import './App.css';
 import TextField from 'material-ui/TextField';
 import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
+import FlatButton from 'material-ui/FlatButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class App extends Component {
@@ -16,8 +17,12 @@ class App extends Component {
           </div>
           <div className="Location">
             <MuiThemeProvider>
-            <TextFieldExampleSimple >
-            </TextFieldExampleSimple>
+            <LocationBox >
+            </LocationBox>
+            </MuiThemeProvider>
+            <MuiThemeProvider>
+              <EnterButton>
+              </EnterButton>
             </MuiThemeProvider>
           </div>
           <div className = "WeatherComponents">
@@ -75,7 +80,7 @@ class Weather extends Component {
   }
 }
 
-const TextFieldExampleSimple = () => (
+const LocationBox = () => (
   <div>
     <TextField
       hintText="Location"
@@ -91,5 +96,11 @@ const WeatherStyle = {
   textAlign: 'center',
   display: 'inline-block',
 };
+
+const EnterButton = () => (
+  <div>
+    <FlatButton className="button" label="Enter" />
+  </div>
+);
 
 export default App;
