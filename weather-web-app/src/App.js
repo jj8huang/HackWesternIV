@@ -10,22 +10,38 @@ class App extends Component {
   render() {
     return (
        <div className="App">
-          <CurrentWeatherHeader>
-          </CurrentWeatherHeader>
-          <MuiThemeProvider>
-          <TextFieldExampleSimple >
-          </TextFieldExampleSimple>
-          <Weather>
-          </Weather>
-          <Weather>
-          </Weather>
-          <Weather>
-          </Weather>
-          <Weather>
-          </Weather>
-          <Weather>
-          </Weather>
-          </MuiThemeProvider> 
+          <div className="Header">
+            <CurrentWeatherHeader>
+            </CurrentWeatherHeader>
+          </div>
+          <div className="Location">
+            <MuiThemeProvider>
+            <TextFieldExampleSimple >
+            </TextFieldExampleSimple>
+            </MuiThemeProvider>
+          </div>
+          <div className = "WeatherComponents">
+            <MuiThemeProvider>
+            <Weather className="one">
+            </Weather>
+            </MuiThemeProvider> 
+            <MuiThemeProvider>
+            <Weather className="two">
+            </Weather>
+            </MuiThemeProvider> 
+            <MuiThemeProvider>
+            <Weather className="three">
+            </Weather>
+            </MuiThemeProvider> 
+            <MuiThemeProvider>
+            <Weather className="four">
+            </Weather>
+            </MuiThemeProvider> 
+            <MuiThemeProvider>
+            <Weather className="five">
+            </Weather>
+            </MuiThemeProvider> 
+          </div>
        </div>
     );
   }
