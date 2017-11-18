@@ -8,6 +8,15 @@ import FlatButton from 'material-ui/FlatButton';
 import {List, ListItem} from 'material-ui/List';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+var finalUrl = "https://hackathon.pic.pelmorex.com/api/search/string?keyword=london&prov=ontario&country=canada";
+
+var locationCode;
+var temperature;
+var _city = "london";
+var _province = "";
+var _country = "";
+
+
 class App extends Component {
   render() {
     return (
@@ -72,6 +81,27 @@ class CurrentWeatherHeader extends Component {
 }
 
 class Weather extends Component {
+  constructor(props) {
+    super(props);
+    this.onSetTemperature = this.onSetTemperature.bind(this);
+    this.onButtonClick = this.onButtonClick.bind(this);
+    this.state = {temp : 1000};
+  }
+  
+  componentWillMount()
+  {
+    setTemperature(this.onSetTemperature);
+  }
+
+  onButtonClick()
+  {
+    setTemperature(this.onSetTemperature);
+  }
+
+  onSetTemperature(temperature)
+  {
+    this.setState({temp:temperature});
+  }
   render() {
     return(
     <Paper className = "weatherStyle" zDepth={1}>
@@ -80,9 +110,10 @@ class Weather extends Component {
         <Divider/>
         <img src={ require('./icons/weather-icons/606794-weather/thunder.png') } />
         <Divider/>
-        <p className = "weatherField">Temperature: </p>
+        <p className = "weatherField">Temperature: {this.state.temp}</p>
         <p className = "weatherField">Precipitation: </p>
         <p className = "weatherField">Windspeed: </p>
+        <EnterButton onClick={this.onButtonClick}>click me </EnterButton>
       </div>
       </Paper>
     );
@@ -90,10 +121,32 @@ class Weather extends Component {
 }
 
 class LocationBox extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: 'Property Value',
+    };
+  }
+
+  handleChange = (event) => {
+    this.setState({
+      value: event.target.value,
+    });
+    _city = this.state.value;
+
+  };
+
   render() {
     return(
     <div>
-      <TextField hintText="Location" />
+      <TextField hintText="Location" 
+        id="text-field-controlled"
+        value={this.state.value}
+        onChange={this.handleChange}
+       /><br />
+      <br />    
+
     </div>
     );
   }
@@ -106,5 +159,44 @@ const EnterButton = () => (
     <br />
   </div>
 );
+
+async function getLocationCode (callback){
+    //get user inputs 
+    var city= _city;//document.getElementById("city").value;
+    var province = _province;//document.getElementById("province").value;
+    var country = _country; //document.getElementById("country").value;
+    
+    //set the url to fetch 
+    finalUrl="https://hackathon.pic.pelmorex.com/api/search/string?keyword="+city +"&prov="+province+"&country="+country;
+    
+   
+   // fetch function
+    fetch(finalUrl)
+    .then(function(res){
+        return res.json();
+    })
+    .then(function(data){
+        locationCode=data.code;
+        callback(); 
+        //console.log(data);
+    })
+}
+
+
+async function setTemperature(callback){
+    getLocationCode(function() {
+        finalUrl="https://hackathon.pic.pelmorex.com/api/data/observation?locationcode="+locationCode;
+        // document.getElementById("place").innerHTML = finalUrl;
+        fetch(finalUrl)
+        .then(function(res){
+            return res.json();
+        })
+        .then(function(data){
+            temperature=data.data.temp;
+            callback(temperature);
+            // document.getEllementById("temp").innerHTML=data.data.temp;
+         })
+    })
+}
 
 export default App;
