@@ -24,13 +24,11 @@
 
 .header-image {
   max-width: 100%;
-  max-height: 100%;
+  max-height: 200%;
 }
 
 .header {
   max-width: 100%;
-  max-height: 80%;
-  height: 100px;
 }
 
 

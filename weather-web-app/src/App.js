@@ -22,7 +22,7 @@ class App extends Component {
           </div>
           <div className = "WeatherComponents">
             <MuiThemeProvider>
-            <Weather className="one">
+            <Weather className="one" currWeather = "sunny">
             </Weather>
             </MuiThemeProvider> 
             <MuiThemeProvider>
@@ -51,7 +51,7 @@ class CurrentWeatherHeader extends Component {
   render(){
     return(
       <div className='header'>
-        <img className= 'header-image' src={ require('./images/bkg_day_clear.png') } />
+        <img className= 'header-image' src={ require('./images/cloudy_day.png') } />
       </div>
     );
   }
@@ -62,7 +62,7 @@ class Weather extends Component {
     return(
     <Paper style={WeatherStyle} zDepth={1}>
       <div className='weather'>
-        <h3>CURRENT WEATHER</h3>
+        <h3>{this.props.currWeather}</h3>
         <Divider/>
         <img src={ require('./images/sun.png') } />
         <Divider/>
