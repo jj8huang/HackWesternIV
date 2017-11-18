@@ -3,7 +3,8 @@ import logo from './logo.svg';
 import './App.css';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import {List, ListItem} from 'material-ui/List';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class App extends Component {
   render() {
@@ -18,8 +19,30 @@ class App extends Component {
             <MuiThemeProvider>
               <EnterButton>
               </EnterButton>
-            </MuiThemeProvider>
+            </MuiThemeProvider>            
           </div>
+          <div className="weatherBox">
+              <MuiThemeProvider>
+                <WeatherTable>
+                </WeatherTable>
+              </MuiThemeProvider>
+              <MuiThemeProvider>
+                <WeatherTable>
+                </WeatherTable>
+              </MuiThemeProvider>
+              <MuiThemeProvider>
+                <WeatherTable>
+                </WeatherTable>
+              </MuiThemeProvider>
+              <MuiThemeProvider>
+                <WeatherTable>
+                </WeatherTable>
+              </MuiThemeProvider>
+              <MuiThemeProvider>
+                <WeatherTable>
+                </WeatherTable>
+              </MuiThemeProvider>
+            </div>
         </header>
       </div>
     );
@@ -28,9 +51,7 @@ class App extends Component {
 
 const LocationBox = () => (
   <div>
-    <TextField
-      hintText="Location"
-    /><br />
+    <TextField hintText="Location" /><br />
     <br />    
   </div>
 );
@@ -40,6 +61,5 @@ const EnterButton = () => (
     <FlatButton className="button" label="Enter" />
   </div>
 );
-
 
 export default App;
