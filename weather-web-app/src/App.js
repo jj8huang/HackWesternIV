@@ -74,7 +74,7 @@ class CurrentWeatherHeader extends Component {
   render(){
     return(
       <div className='header'>
-        <img className= 'header-image' src={ require('./images/cloudy_day.png') } />
+        <img className= 'header-image' src={ require('./icons/Partially cloudy night.png') } />
       </div>
     );
   }
