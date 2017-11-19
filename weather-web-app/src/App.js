@@ -167,7 +167,6 @@ const EnterButton = () => (
 class SuggestionBox extends Component {
   constructor(props){
     super(props);
-    console.log(props.weatherData.temp);
     this.chooseSuggestion = this.chooseSuggestion.bind(this);
   }
 
@@ -223,7 +222,9 @@ class SuggestionBox extends Component {
 
     return(
     <div className="suggestionBox">
+    <Paper className = "suggestionStyle" zDepth={1}>
       {suggestion}
+    </Paper>
     </div>
     );
   }
