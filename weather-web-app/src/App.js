@@ -25,12 +25,7 @@ class App extends Component {
         <CurrentWeatherHeader>
         </CurrentWeatherHeader>
       </div>
-      <div className="Location">
-        <MuiThemeProvider>
-          <LocationBox>
-          </LocationBox>
-        </MuiThemeProvider>           
-      </div>
+      
       <div className = "SevenDayForecast">
         <MuiThemeProvider>
           <SevenDayForecast>
@@ -57,6 +52,7 @@ class SevenDayForecast extends Component {
     super(props);
     this.onSetTemperature = this.onSetTemperature.bind(this);
     this.onButtonClick = this.onButtonClick.bind(this);
+    this.handleEnterKey = this.handleEnterKey.bind(this);
 
     this.state = {
       hasData: false
@@ -72,6 +68,12 @@ class SevenDayForecast extends Component {
   onButtonClick(e)
   {
     e.preventDefault();
+    setTemperature(this.onSetTemperature);
+  }
+
+
+  handleEnterKey()
+  {
     setTemperature(this.onSetTemperature);
   }
 
@@ -93,6 +95,14 @@ class SevenDayForecast extends Component {
 
   render() {
     return (
+      <div>
+      <div className="Location">
+        <MuiThemeProvider>
+          <LocationBox onSubmit={this.handleEnterKey}/>
+        </MuiThemeProvider>           
+      </div>
+        
+     
       <form onSubmit={this.onButtonClick} className="App">
         <MuiThemeProvider>
           <EnterButton>
@@ -108,6 +118,8 @@ class SevenDayForecast extends Component {
         { this.state.hasData === true ? this.renderWeather("Saturday" ,6) : (<div>still getting data .. hoild on</div>)}
         </div>
       </form>
+
+       </div>
     );
   }
 }
@@ -132,6 +144,7 @@ class LocationBox extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.keyDownTextField = this.keyDownTextField.bind(this);
 
     this.state = {
       value: '',
@@ -140,11 +153,24 @@ class LocationBox extends Component {
 
   handleChange(event) {
     _city = event.target.value;
-   
   
   }
 
+  componentDidMount () {
+    document.addEventListener("keydown", this.keyDownTextField, false);
+  }
+
+keyDownTextField(e) {
+var keyCode = e.keyCode;
+  if(keyCode==13) {
+  this.props.onSubmit();
+  e.preventDefault();
+  } 
+  
+}
+  
   render() {
+
     return(
     <div>
       <TextField hintText="Location" 
