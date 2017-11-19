@@ -18,9 +18,32 @@ var _country = "";
 
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.onSetTemperature = this.onSetTemperature.bind(this);
+    this.onButtonClick = this.onButtonClick.bind(this);
+    this.state = {temp : 1000};
+  }
+  
+  componentWillMount()
+  {
+    setTemperature(this.onSetTemperature);
+  }
+
+  onButtonClick(e)
+  {
+    e.preventDefault();
+    setTemperature(this.onSetTemperature);
+  }
+
+  onSetTemperature(data)
+  {
+    this.setState({temp:data.temp});
+  }
   render() {
+    const{temp} = this.state;
     return (
-       <div className="App">
+       <form onSubmit={this.onButtonClick} className="App">
           <div className="Header">
             <CurrentWeatherHeader>
             </CurrentWeatherHeader>
@@ -37,7 +60,7 @@ class App extends Component {
           </div>
           <div className = "WeatherComponents">
             <MuiThemeProvider>
-            <Weather className="one">
+            <Weather temperature={temp} className="one">
             </Weather>
             </MuiThemeProvider> 
             <MuiThemeProvider>
@@ -65,7 +88,7 @@ class App extends Component {
             </Weather>
             </MuiThemeProvider> 
           </div>
-       </div>
+       </form>
     );
   }
 }
@@ -81,27 +104,7 @@ class CurrentWeatherHeader extends Component {
 }
 
 class Weather extends Component {
-  constructor(props) {
-    super(props);
-    this.onSetTemperature = this.onSetTemperature.bind(this);
-    this.onButtonClick = this.onButtonClick.bind(this);
-    this.state = {temp : 1000};
-  }
   
-  componentWillMount()
-  {
-    setTemperature(this.onSetTemperature);
-  }
-
-  onButtonClick()
-  {
-    setTemperature(this.onSetTemperature);
-  }
-
-  onSetTemperature(temperature)
-  {
-    this.setState({temp:temperature});
-  }
   render() {
     return(
     <Paper className = "weatherStyle" zDepth={1}>
@@ -110,10 +113,9 @@ class Weather extends Component {
         <Divider/>
         <img src={ require('./icons/weather-icons/606794-weather/thunder.png') } />
         <Divider/>
-        <p className = "weatherField">Temperature: {this.state.temp}</p>
+        <p className = "weatherField">Temperature: {this.props.temperature}</p>
         <p className = "weatherField">Precipitation: </p>
         <p className = "weatherField">Windspeed: </p>
-        <EnterButton onClick={this.onButtonClick}>click me </EnterButton>
       </div>
       </Paper>
     );
@@ -152,7 +154,7 @@ class LocationBox extends Component {
 
 const EnterButton = () => (
   <div>
-    <FlatButton className="button" label="Enter" />
+    <FlatButton type="submit" className="button" label="Enter" />
     <br />
     <br />
   </div>
@@ -183,15 +185,16 @@ async function getLocationCode (callback){
 
 async function setTemperature(callback){
     getLocationCode(function() {
-        finalUrl="https://hackathon.pic.pelmorex.com/api/data/observation?locationcode="+locationCode;
+        finalUrl="https://hackathon.pic.pelmorex.com/api/data/longterm?locationcode="+locationCode;
         // document.getElementById("place").innerHTML = finalUrl;
         fetch(finalUrl)
         .then(function(res){
             return res.json();
         })
         .then(function(data){
-            temperature=data.data.temp;
-            callback(temperature);
+            //temperature=data.data.temp;
+           // console.log(data.data);
+            callback(data.data);
             // document.getEllementById("temp").innerHTML=data.data.temp;
          })
     })
