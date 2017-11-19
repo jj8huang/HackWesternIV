@@ -69,3 +69,13 @@
 .weatherImg{
   width:100%;
 }
+.suggestionBox{
+  text-align:center;
+}
+.suggestionStyle{
+  color: #33d6ff !important;
+  max-width: 80%;
+  display:inline;
+  text-align:center;
+  padding: 5% 20%;
+}
