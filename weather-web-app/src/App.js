@@ -41,7 +41,7 @@ class CurrentWeatherHeader extends Component {
   render(){
     return(
       <div className='header'>
-        <img className= 'header-image' src={ require('./icons/Partially cloudy night.png') } />
+        <img className= 'header-image' src={ require('./icons/Partially cloudy morning.png') } />
       </div>
     );
   }
@@ -118,24 +118,60 @@ class SevenDayForecast extends Component {
         { this.state.hasData === true ? this.renderWeather("Saturday" ,6) : (<div>still getting data .. hold on</div>)}
         </div>
       </form>
-{ this.state.hasData === true ? <SuggestionBox weatherData = {this.state.temp[0]}/> : (<div>still getting data .. hold on</div>)}
-        
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+        <div>
+          { this.state.hasData === true ? <SuggestionBox weatherData = {this.state.temp[0]}/> : (<div>still getting data .. hold on</div>)}
+        </div>
        </div>
     );
   }
 }
 
 class Weather extends Component {
-  chooseWeatherIcon(){
-
+  constructor(props){
+    super(props);
+    this.chooseImage = this.chooseImage.bind(this);
   }
+  chooseImage(temp, precip){
+    var imageSource = '';
 
+    if(temp <= 0 && precip >= 60) {
+      imageSource = "./icons/weather-icons/606794-weather/snow.png";
+    } 
+    if (temp > 0 && temp <= 18 && precip < 60){
+      imageSource = "./icons/weather-icons/606794-weather/cloud.png";
+    } 
+    if(temp > 18 && precip < 60) {
+      imageSource = "./icons/weather-icons/606794-weather/sunny.png";
+    }
+    if(temp > 0 && precip >= 60) {
+      imageSource = "./icons/weather-icons/606794-weather/rain.png";
+    }
+    if(temp > 0 && precip >= 85) {
+      imageSource = "./icons/weather-icons/606794-weather/thunder.png";
+    }
+    return imageSource;
+}
   render() {
+    const imageSource = this.chooseImage(this.props.weather.tempMax, this.props.weather.forecastArr[0].pop);
     return(
       <Paper className = "weatherStyle" zDepth={0}>
         <div className='weather'>
         <h3>{this.props.title}</h3>
-        <img src={ require('./icons/weather-icons/606794-weather/thunder.png') } />
+        { imageSource == "./icons/weather-icons/606794-weather/rain.png" 
+        ? <img src={ require("./icons/weather-icons/606794-weather/rain.png") } /> 
+        : imageSource == "./icons/weather-icons/606794-weather/cloud.png" 
+        ? <img src={ require("./icons/weather-icons/606794-weather/cloud.png") } />
+        : imageSource == "./icons/weather-icons/606794-weather/sunny.png" 
+        ? <img src={ require("./icons/weather-icons/606794-weather/sunny.png") } />
+        : imageSource == "./icons/weather-icons/606794-weather/thunder.png" 
+        ? <img src={ require("./icons/weather-icons/606794-weather/thunder.png") } />
+        : <img src={ require("./icons/weather-icons/606794-weather/snow.png") } />}
+        
         <p className = "weatherField">Temperature: {this.props.weather.tempMax}</p>
         <p className = "weatherField">Precipitation:  {this.props.weather.rain}</p>
         <p className = "weatherField">Windspeed:  {this.props.weather.forecastArr[0].windSpeed}</p>
@@ -144,6 +180,9 @@ class Weather extends Component {
       );
   }
 }
+
+
+
 
 class LocationBox extends Component {
   constructor(props) {
@@ -208,18 +247,18 @@ class SuggestionBox extends Component {
 
     //Comment on temperature
     if(temp < -15) {
-      suggestion = "Whoa! It's freezing today! Make sure to bundle up!";
+      suggestion = "Whoa! It's going to be freezing tomorrow! Make sure to bundle up!";
       isCold = true;
     } else if (temp <= 0 && temp >= -15) {
-      suggestion = "It's cold today! Wear a coat.";
+      suggestion = "It will be cold tomorrow! Wear a coat.";
       isCold = true;
     } else if (temp > 0 && temp <= 15) {
-      suggestion = "It's cool tomorrow!";
+      suggestion = "It will be cool tomorrow!";
       isCold = false;
     } else if(temp > 15 && temp <= 26){
-      suggestion = "It's warm today!";
+      suggestion = "It will be warm tomorrow!";
     } else if(temp > 26) {
-      suggestion = "It's hot today!";
+      suggestion = "It will be hot tomorrow!";
       isCold = false;
     }
 
@@ -236,7 +275,7 @@ class SuggestionBox extends Component {
     //Take into account wind speed
     if(windspeed > 20 && temp > 0) {
       bringUmbrella = false;
-      suggestion = suggestion + " It's too windy for an umbrella today.";
+      suggestion = suggestion + " It's too windy for an umbrella.";
     }
 
     //Decide if should suggest an umbrella
@@ -248,8 +287,8 @@ class SuggestionBox extends Component {
   }
 
   render() {
-    const suggestion = this.chooseSuggestion(this.props.weatherData.tempMax, this.props.weatherData, 
-    this.props.weatherData, this.props.weatherData);
+    const suggestion = this.chooseSuggestion(this.props.weatherData.tempMax, this.props.weatherData.forecastArr[0].windSpeed, 
+    this.props.weatherData.forecastArr[0].pop, this.props.weatherData.forecastArr[0].feelsLike);
 
     return(
     <div className="suggestionBox">
