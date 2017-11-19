@@ -18,6 +18,41 @@ var _country = "";
 
 
 class App extends Component {
+  render() {
+    return (
+      <form className="App">
+      <div className="Header">
+        <CurrentWeatherHeader>
+        </CurrentWeatherHeader>
+      </div>
+      <div className="Location">
+        <MuiThemeProvider>
+          <LocationBox>
+          </LocationBox>
+        </MuiThemeProvider>           
+      </div>
+      <div className = "SevenDayForecast">
+        <MuiThemeProvider>
+          <SevenDayForecast>
+          </SevenDayForecast>
+        </MuiThemeProvider>
+      </div>
+      </form>
+    );
+  }
+}
+
+class CurrentWeatherHeader extends Component {
+  render(){
+    return(
+      <div className='header'>
+        <img className= 'header-image' src={ require('./icons/Partially cloudy night.png') } />
+      </div>
+    );
+  }
+}
+
+class SevenDayForecast extends Component {
   constructor(props) {
     super(props);
     this.onSetTemperature = this.onSetTemperature.bind(this);
@@ -38,83 +73,49 @@ class App extends Component {
 
   onSetTemperature(data)
   {
-    this.setState({temp:data.temp, prec:data.precipitation});
+    this.setState({temp:data});
+  }
+
+  renderWeather(weekday) {
+    const{temp} = this.state;
+    return (
+    <MuiThemeProvider>
+      <Weather title={weekday} weather={temp}/>
+    </MuiThemeProvider>
+    );
   }
 
   render() {
-    const{temp} = this.state;
     return (
-       <form onSubmit={this.onButtonClick} className="App">
-          <div className="Header">
-            <CurrentWeatherHeader>
-            </CurrentWeatherHeader>
-          </div>
-          <div className="Location">
-            <MuiThemeProvider>
-            <LocationBox >
-            </LocationBox>
-            </MuiThemeProvider>
-            <MuiThemeProvider>
-              <EnterButton>
-              </EnterButton>
-            </MuiThemeProvider>            
-          </div>
-          <div className = "WeatherComponents">
-            <MuiThemeProvider>
-            <Weather temperature={temp}className="one">
-            </Weather>
-            </MuiThemeProvider> 
-            <MuiThemeProvider>
-            <Weather className="two">
-            </Weather>
-            </MuiThemeProvider> 
-            <MuiThemeProvider>
-            <Weather className="three">
-            </Weather>
-            </MuiThemeProvider> 
-            <MuiThemeProvider>
-            <Weather className="four">
-            </Weather>
-            </MuiThemeProvider> 
-            <MuiThemeProvider>
-            <Weather className="five">
-            </Weather>
-            </MuiThemeProvider> 
-            <MuiThemeProvider>
-            <Weather className="six">
-            </Weather>
-            </MuiThemeProvider> 
-            <MuiThemeProvider>
-            <Weather className="seven">
-            </Weather>
-            </MuiThemeProvider> 
-          </div>
-       </form>
-    );
-  }
-}
-
-class CurrentWeatherHeader extends Component {
-  render(){
-    return(
-      <div className='header'>
-        <img className= 'header-image' src={ require('./icons/Partially cloudy night.png') } />
-      </div>
+      <form onSubmit={this.onButtonClick} className="App">
+      <MuiThemeProvider>
+        <EnterButton>
+        </EnterButton>
+      </MuiThemeProvider>
+        <div className="SevenDays">
+          {this.renderWeather("Sunday")}
+          {this.renderWeather("Monday")}
+          {this.renderWeather("Tuesday")}
+          {this.renderWeather("Wednesday")}
+          {this.renderWeather("Thursday")}
+          {this.renderWeather("Friday")}
+          {this.renderWeather("Saturday")}
+        </div>
+      </form>
     );
   }
 }
 
 class Weather extends Component {
-  
   render() {
     return(
       <Paper className = "weatherStyle" zDepth={0}>
         <div className='weather'>
-          <h3>{this.props.currWeather}</h3>
+        <h3>{this.props.title}</h3>
           <img src={ require('./icons/weather-icons/606794-weather/thunder.png') } className="weatherImg"/>
-          <p className = "weatherField">Temperature: {this.props.temperature}</p>
-          <p className = "weatherField">Precipitation: {this.props.precipitation}</p>
-          <p className = "weatherField">Windspeed: {this.props.windspeed}</p>
+          <p className = "weatherField">Temperature: {this.props.weather.temp}</p>
+          <p className = "weatherField">Precipitation: {this.props.weather.precipitation} </p>
+          <p className = "weatherField">Windspeed: {this.props.weather.windSpeed}</p>
         </div>
       </Paper>
       );
@@ -184,7 +185,7 @@ async function getLocationCode (callback){
 
 async function setTemperature(callback){
     getLocationCode(function() {
-        finalUrl="https://hackathon.pic.pelmorex.com/api/data/observation?locationcode="+locationCode;
+        finalUrl="https://hackathon.pic.pelmorex.com/api/data/longterm?locationcode="+locationCode;
         // document.getElementById("place").innerHTML = finalUrl;
         fetch(finalUrl)
         .then(function(res){
