@@ -37,6 +37,8 @@ class App extends Component {
           </SevenDayForecast>
         </MuiThemeProvider>
       </div>
+      <div className = "Suggestions">
+      </div>
       </form>
     );
   }
@@ -77,10 +79,10 @@ class SevenDayForecast extends Component {
   }
 
   renderWeather(weekday) {
-    const{temp} = this.state;
+    //const{temp} = this.state;
     return (
     <MuiThemeProvider>
-      <Weather title={weekday} weather={temp}/>
+      <Weather title={weekday} temperature={this.state.temp}/>
     </MuiThemeProvider>
     );
   }
@@ -101,6 +103,8 @@ class SevenDayForecast extends Component {
           {this.renderWeather("Friday")}
           {this.renderWeather("Saturday")}
         </div>
+      <SuggestionBox weatherData={this.state}/>
+
       </form>
     );
   }
@@ -160,6 +164,72 @@ const EnterButton = () => (
   </div>
 );
 
+class SuggestionBox extends Component {
+  constructor(props){
+    super(props);
+    console.log(props.weatherData.temp);
+    this.chooseSuggestion = this.chooseSuggestion.bind(this);
+  }
+
+  chooseSuggestion(temp, windspeed, precip, feelsLike){
+    var suggestion = '';
+    var isCold = false;
+    var bringUmbrella = false;
+
+    //Comment on temperature
+    if(temp < -15) {
+      suggestion = "Whoa! It's freezing today! Make sure to bundle up!";
+      isCold = true;
+    } else if (temp <= 0 && temp >= -15) {
+      suggestion = "It's cold today! Wear a coat.";
+      isCold = true;
+    } else if (temp > 0 && temp <= 15) {
+      suggestion = "It's cool today!";
+      isCold = false;
+    } else if(temp > 15 && temp <= 26){
+      suggestion = "It's warm today!";
+    } else if(temp > 26) {
+      suggestion = "It's hot today!";
+      isCold = false;
+    }
+
+    //Take into account precipitation
+    if(precip >= 60 && temp > 0) {
+      bringUmbrella = true;
+    }
+
+    //No rain and it's hot
+    if(!bringUmbrella && temp > 15) {
+      suggestion = suggestion + " Put on that sunscreen and those sunglasses.";
+    }
+
+    //Take into account wind speed
+    if(windspeed > 20 && temp > 0) {
+      bringUmbrella = false;
+      suggestion = suggestion + " It's too windy for an umbrella today.";
+    }
+
+    //Decide if should suggest an umbrella
+    if(bringUmbrella) {
+      suggestion = suggestion + " You should bring an umbrella.";
+    }
+
+    return suggestion;
+  }
+
+  render() {
+    const suggestion = this.chooseSuggestion(this.props.weatherData.temp, this.props.weatherData.windspeed, 
+    this.props.weatherData.rain, this.props.weatherData.feelsLike);
+
+    return(
+    <div className="suggestionBox">
+      {suggestion}
+    </div>
+    );
+  }
+}
+
+
 async function getLocationCode (callback){
     //get user inputs 
     var city= _city;//document.getElementById("city").value;
@@ -169,7 +239,6 @@ async function getLocationCode (callback){
     //set the url to fetch 
     finalUrl="https://hackathon.pic.pelmorex.com/api/search/string?keyword="+city +"&prov="+province+"&country="+country;
     
-   
    // fetch function
     fetch(finalUrl)
     .then(function(res){
@@ -198,58 +267,6 @@ async function setTemperature(callback){
             // document.getEllementById("temp").innerHTML=data.data.temp;
          })
     })
-}
-
-function chooseSuggestion(){
-  //Get values
-  var temp;
-  var precip;
-  var windspeed;
-  var feelsLike;
-
-  var suggestion = [];
-  var isCold = false;
-  var bringUmbrella = false;
-
-  //Comment on temperature
-  if(temp < -15) {
-    suggestion.push("Whoa! It's freezing today! Make sure to bundle up!");
-    isCold = true;
-  } else if (temp <= 0 && temp >= -15) {
-    suggestion.push("It's cold today! Wear a coat.");
-    isCold = true;
-  } else if (temp > 0 && temp <= 15) {
-    suggestion.push("It's cool today!");
-    isCold = false;
-  } else if(temp > 15 && temp <= 26){
-    suggestion.push("It's warm today!")
-  } else if(temp > 26) {
-    suggestion.push("It's hot today!");
-    isCold = false;
-  }
-
-  //Take into account precipitation
-  if(precip >= 60 && temp > 0) {
-    bringUmbrella = true;
-  }
-
-  //No rain and it's hot
-  if(!bringUmbrella && temp > 15) {
-    suggestion.push("Put on that sunscreen and those sunglasses.");
-  }
-
-  //Take into account wind speed
-  if(windspeed > 20 && temp > 0) {
-    bringUmbrella = false;
-    suggestion.push("It's too windy for an umbrella today.");
-  }
-
-  //Decide if should suggest an umbrella
-  if(bringUmbrella) {
-    suggestion.push(" You should bring an umbrella.");
-  }
-
-  return suggestion.join("");
 }
 
 export default App;
