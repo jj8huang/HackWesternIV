@@ -87,7 +87,11 @@ class SevenDayForecast extends Component {
   renderWeather(weekday,i) {
     return (
     <MuiThemeProvider>
-      <Weather title={weekday} weather={this.state.temp[i]}/>
+      <Weather title={
+        getDateFromDate(this.state.temp[i].time)
+        
+
+      } weather={this.state.temp[i]}/>
 
     </MuiThemeProvider>
     );
@@ -302,4 +306,20 @@ async function setTemperature(callback){
     })
 }
 
+function getDateFromDate(day)
+{
+  let _day = day.split("-");
+  _day[2] = _day[2].split("T")[0];
+   let dateOfWeekNum = new Date( _day[0], (_day[1] - 1)%12, _day[2]);
+  // dayOfWeekNum = dateOfWeekNum.getDay();
+  // switch(dayOfWeekNum)
+  // {
+  //   case 0:
+  //   dayOfWeek = "Sunday" + ;
+  // }
+
+  return dateOfWeekNum.toDateString();
+}
+
 export default App;
+
