@@ -200,4 +200,56 @@ async function setTemperature(callback){
     })
 }
 
+function chooseSuggestion(){
+  //Get values
+  var temp;
+  var precip;
+  var windspeed;
+  var feelsLike;
+
+  var suggestion = [];
+  var isCold = false;
+  var bringUmbrella = false;
+
+  //Comment on temperature
+  if(temp < -15) {
+    suggestion.push("Whoa! It's freezing today! Make sure to bundle up!");
+    isCold = true;
+  } else if (temp <= 0 && temp >= -15) {
+    suggestion.push("It's cold today! Wear a coat.");
+    isCold = true;
+  } else if (temp > 0 && temp <= 15) {
+    suggestion.push("It's cool today!");
+    isCold = false;
+  } else if(temp > 15 && temp <= 26){
+    suggestion.push("It's warm today!")
+  } else if(temp > 26) {
+    suggestion.push("It's hot today!");
+    isCold = false;
+  }
+
+  //Take into account precipitation
+  if(precip >= 60 && temp > 0) {
+    bringUmbrella = true;
+  }
+
+  //No rain and it's hot
+  if(!bringUmbrella && temp > 15) {
+    suggestion.push("Put on that sunscreen and those sunglasses.");
+  }
+
+  //Take into account wind speed
+  if(windspeed > 20 && temp > 0) {
+    bringUmbrella = false;
+    suggestion.push("It's too windy for an umbrella today.");
+  }
+
+  //Decide if should suggest an umbrella
+  if(bringUmbrella) {
+    suggestion.push(" You should bring an umbrella.");
+  }
+
+  return suggestion.join("");
+}
+
 export default App;
