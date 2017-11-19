@@ -111,15 +111,13 @@ class Weather extends Component {
     <Paper className = "weatherStyle" zDepth={1}>
       <div className='weather'>
         <h3>{this.props.title}</h3>
-        <Divider/>
         <img src={ require('./icons/weather-icons/606794-weather/thunder.png') } />
-        <Divider/>
         <p className = "weatherField">Temperature: {this.props.temperature}</p>
         <p className = "weatherField">Precipitation: </p>
         <p className = "weatherField">Windspeed: </p>
       </div>
       </Paper>
-    );
+      );
   }
 }
 
