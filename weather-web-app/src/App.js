@@ -22,7 +22,7 @@ class App extends Component {
     super(props);
     this.onSetTemperature = this.onSetTemperature.bind(this);
     this.onButtonClick = this.onButtonClick.bind(this);
-    this.state = {temp : 1000};
+    this.state = {temp : 1000, prec : 1000};
   }
   
   componentWillMount()
@@ -38,8 +38,9 @@ class App extends Component {
 
   onSetTemperature(data)
   {
-    this.setState({temp:data.temp});
+    this.setState({temp:data.temp, prec:data.precipitation});
   }
+
   render() {
     const{temp} = this.state;
     return (
@@ -60,7 +61,7 @@ class App extends Component {
           </div>
           <div className = "WeatherComponents">
             <MuiThemeProvider>
-            <Weather temperature={temp} className="one">
+            <Weather temperature={temp}className="one">
             </Weather>
             </MuiThemeProvider> 
             <MuiThemeProvider>
@@ -107,13 +108,13 @@ class Weather extends Component {
   
   render() {
     return(
-      <Paper className = "weatherStyle" zDepth={1}>
+      <Paper className = "weatherStyle" zDepth={0}>
         <div className='weather'>
           <h3>{this.props.currWeather}</h3>
           <img src={ require('./icons/weather-icons/606794-weather/thunder.png') } className="weatherImg"/>
           <p className = "weatherField">Temperature: {this.props.temperature}</p>
-          <p className = "weatherField">Precipitation: </p>
-          <p className = "weatherField">Windspeed: </p>
+          <p className = "weatherField">Precipitation: {this.props.precipitation}</p>
+          <p className = "weatherField">Windspeed: {this.props.windspeed}</p>
         </div>
       </Paper>
       );
@@ -183,7 +184,7 @@ async function getLocationCode (callback){
 
 async function setTemperature(callback){
     getLocationCode(function() {
-        finalUrl="https://hackathon.pic.pelmorex.com/api/data/longterm?locationcode="+locationCode;
+        finalUrl="https://hackathon.pic.pelmorex.com/api/data/observation?locationcode="+locationCode;
         // document.getElementById("place").innerHTML = finalUrl;
         fetch(finalUrl)
         .then(function(res){
