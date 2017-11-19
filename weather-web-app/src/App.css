@@ -47,15 +47,25 @@
 
 .weatherStyle{
   height: 400;
-  width: 200;
+  width: 12%;
   margin: 20;
   text-align: 'center';
   display: inline-flex;
 }
 .weather{
   border-color: #33d6ff !important ;
+  font-weight:bold;
+  font-size:14px;
+  border:8%;
+  text-align:left;
 }
 
 .weatherField{
   color:#33d6ff !important;
+  width:100%;
+  border:8% !important;
+}
+
+.weatherImg{
+  width:100%;
 }

@@ -107,18 +107,16 @@ class Weather extends Component {
   
   render() {
     return(
-    <Paper className = "weatherStyle" zDepth={1}>
-      <div className='weather'>
-        <h3>{this.props.currWeather}</h3>
-        <Divider/>
-        <img src={ require('./icons/weather-icons/606794-weather/thunder.png') } />
-        <Divider/>
-        <p className = "weatherField">Temperature: {this.props.temperature}</p>
-        <p className = "weatherField">Precipitation: </p>
-        <p className = "weatherField">Windspeed: </p>
-      </div>
+      <Paper className = "weatherStyle" zDepth={1}>
+        <div className='weather'>
+          <h3>{this.props.currWeather}</h3>
+          <img src={ require('./icons/weather-icons/606794-weather/thunder.png') } className="weatherImg"/>
+          <p className = "weatherField">Temperature: {this.props.temperature}</p>
+          <p className = "weatherField">Precipitation: </p>
+          <p className = "weatherField">Windspeed: </p>
+        </div>
       </Paper>
-    );
+      );
   }
 }
 
