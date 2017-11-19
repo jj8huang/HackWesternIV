@@ -224,7 +224,9 @@ class SuggestionBox extends Component {
 
     return(
     <div className="suggestionBox">
+    <Paper className = "suggestionStyle" zDepth={1}>
       {suggestion}
+    </Paper>
     </div>
     );
   }
