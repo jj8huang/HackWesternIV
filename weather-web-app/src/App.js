@@ -57,7 +57,11 @@ class SevenDayForecast extends Component {
     super(props);
     this.onSetTemperature = this.onSetTemperature.bind(this);
     this.onButtonClick = this.onButtonClick.bind(this);
-    this.state = {temp : 1000};
+
+    this.state = {
+      hasData: false
+    };
+    
   }
   
   componentWillMount()
@@ -73,13 +77,16 @@ class SevenDayForecast extends Component {
 
   onSetTemperature(data)
   {
-    this.setState({temp:data.temp});
+    this.setState({temp:data,
+        hasData: true
+    });
   }
-  renderWeather(weekday) {
-    const{temp} = this.state;
+
+
+  renderWeather(weekday,i) {
     return (
     <MuiThemeProvider>
-      <Weather title={weekday} temperature={temp}/>
+      <Weather title={weekday} weather={this.state.temp[i]}/>
     </MuiThemeProvider>
     );
   }
@@ -87,18 +94,18 @@ class SevenDayForecast extends Component {
   render() {
     return (
       <form onSubmit={this.onButtonClick} className="App">
-      <MuiThemeProvider>
-        <EnterButton>
-        </EnterButton>
-      </MuiThemeProvider>
+        <MuiThemeProvider>
+          <EnterButton>
+          </EnterButton>
+        </MuiThemeProvider>
         <div className="SevenDays">
-          {this.renderWeather("Sunday")}
-          {this.renderWeather("Monday")}
-          {this.renderWeather("Tuesday")}
-          {this.renderWeather("Wednesday")}
-          {this.renderWeather("Thursday")}
-          {this.renderWeather("Friday")}
-          {this.renderWeather("Saturday")}
+        { this.state.hasData === true ? this.renderWeather("Sunday", 0) : (<div>still getting data .. hoild on</div>)}
+        { this.state.hasData === true ? this.renderWeather("Monday", 1) : (<div>still getting data .. hoild on</div>)}
+        { this.state.hasData === true ? this.renderWeather("Tuesday", 2) : (<div>still getting data .. hoild on</div>)}
+        { this.state.hasData === true ? this.renderWeather("Wednesday", 3) : (<div>still getting data .. hoild on</div>)}
+        { this.state.hasData === true ? this.renderWeather("Thursday", 4) : (<div>still getting data .. hoild on</div>)}
+        { this.state.hasData === true ? this.renderWeather("Friday", 5) : (<div>still getting data .. hoild on</div>)}
+        { this.state.hasData === true ? this.renderWeather("Saturday" ,6) : (<div>still getting data .. hoild on</div>)}
         </div>
       </form>
     );
@@ -112,9 +119,9 @@ class Weather extends Component {
       <div className='weather'>
         <h3>{this.props.title}</h3>
         <img src={ require('./icons/weather-icons/606794-weather/thunder.png') } />
-        <p className = "weatherField">Temperature: {this.props.temperature}</p>
-        <p className = "weatherField">Precipitation: </p>
-        <p className = "weatherField">Windspeed: </p>
+        <p className = "weatherField">Temperature: {this.props.weather.tempMax}</p>
+        <p className = "weatherField">Precipitation:  {this.props.weather.rain}</p>
+        <p className = "weatherField">Windspeed:  {this.props.weather.snow}</p>
       </div>
       </Paper>
       );
@@ -124,26 +131,24 @@ class Weather extends Component {
 class LocationBox extends Component {
   constructor(props) {
     super(props);
+    this.handleChange = this.handleChange.bind(this);
 
     this.state = {
       value: '',
     };
   }
 
-  handleChange = (event) => {
-    this.setState({
-      value: event.target.value,
-    });
-    _city = this.state.value;
-
-  };
+  handleChange(event) {
+    _city = event.target.value;
+   
+  
+  }
 
   render() {
     return(
     <div>
       <TextField hintText="Location" 
         id="text-field-controlled"
-        value={this.state.value}
         onChange={this.handleChange}
        />
     </div>
@@ -162,6 +167,7 @@ const EnterButton = () => (
 async function getLocationCode (callback){
     //get user inputs 
     var city= _city;//document.getElementById("city").value;
+    console.log(city);
     var province = _province;//document.getElementById("province").value;
     var country = _country; //document.getElementById("country").value;
     
@@ -184,7 +190,7 @@ async function getLocationCode (callback){
 
 async function setTemperature(callback){
     getLocationCode(function() {
-        finalUrl="https://hackathon.pic.pelmorex.com/api/data/observation?locationcode="+locationCode;
+        finalUrl="https://hackathon.pic.pelmorex.com/api/data/longterm?locationcode="+locationCode;
         // document.getElementById("place").innerHTML = finalUrl;
         fetch(finalUrl)
         .then(function(res){
